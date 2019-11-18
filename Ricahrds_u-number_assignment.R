@@ -106,6 +106,18 @@ answer9 <- legoGames
 
 ################ Question #10 ################
 
+numGamesPerYear <- videogames[ , names(videogames) == 'Year_of_Release' | names(videogames) == 'Genre']
+
+numGamesPerYear <- transform(numGamesPerYear, GamesPerYear = ave(seq(nrow(numGamesPerYear)), Year_of_Release, FUN=length))
+numGamesPerYear <- numGamesPerYear %>% count(Year_of_Release, Genre, GamesPerYear)
+# str(numGamesPerYear)
+
+answer10 <- ggplot(data = numGamesPerYear , mapping = aes(x = Year_of_Release, y = GamesPerYear, fill=Genre, color=Genre)) + 
+labs( x = 'Year of Release', y = 'Number of Games', title='') + 
+geom_line() + geom_point()
+
+# answer10
+
 ################ Question #11 ################
 
 gameGenre <- videogames[ , names(videogames) == 'Name' | names(videogames) == 'Genre']
