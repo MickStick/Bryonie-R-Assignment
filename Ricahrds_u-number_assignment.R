@@ -84,4 +84,36 @@ UbiAct <- na.omit(UbiAct)
 UbiAct <- UbiAct %>% count(Genre, Publisher, name="NumOfPublishes")
 
 answer7 <- ggplot(data = UbiAct, mapping = aes(y = NumOfPublishes, x = Genre, fill = Publisher)) + geom_col() + labs( x = 'Genre', y = 'Number of Publishes', title = "Number of Publishes per Genre for 'Ubisoft' and 'Activision'")
-answer7
+# answer7
+
+################ Question #8 ################
+
+GenreCritics <- videogames[ , names(videogames) == 'Genre' | names(videogames) == 'Critic_Score']
+
+# GenreCritics <- GenreCritics %>% count(Genre, Critic_Score, name="Score_Count")
+
+# str(GenreCritics)
+
+answer8 <- ggplot(data = GenreCritics, mapping = aes( x = Genre, y = Critic_Score)) + geom_boxplot(outlier.colour="skyblue") + labs(x = 'Genre', y = 'Critic Scores', title = 'Distribution of Critic Scores by Genre')
+# answer8
+
+################ Question #9 ################
+
+################ Question #10 ################
+
+################ Question #11 ################
+
+gameGenre <- videogames[ , names(videogames) == 'Name' | names(videogames) == 'Genre']
+
+gameGenre <- transform(gameGenre, NumOfGames = ave(seq(nrow(gameGenre)), Genre, FUN=length))
+gameGenre <- gameGenre %>% count(Genre, NumOfGames)
+
+
+str(gameGenre)
+
+ggplot(data = gameGenre, mapping = aes(y = as(NumOfGames, 'integer'), x = Genre, fill=Genre)) + 
+geom_col() + labs( x = "", y = "Number of Games", title="Videogame Hits Per Genre") + 
+theme(legend.position="none", axis.text.y=element_blank()) + 
+geom_text(aes(label=NumOfGames), position=position_dodge(width=0.9), vjust=-0.5)
+
+
