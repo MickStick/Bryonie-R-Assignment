@@ -1,5 +1,0 @@
-"name"	"brand"	"rating"	
-"Bread"	"T&P"	110	
-"Cheese"	"Tastee"	75	
-"Dessert Boot"	"Clarks"	100	
-"Play Station"	"Sony"	80	
