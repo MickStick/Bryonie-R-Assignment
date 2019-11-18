@@ -49,7 +49,18 @@ answer4 <- NoKAVideogames
 
 ################ Question #5 ################
 
-ggplot() + geom_point(data = videogames, mapping = aes(x = Platform == 'WiiU' & User_Score, y = Critic_Score))
+# ggplot() + geom_point(data = videogames, mapping = aes(x = Platform == 'WiiU' & User_Score, y = Critic_Score))
 
+# plot(videogames$Platform == 'WiiU' & videogames$User_Score, videogames$Critic_Score)
+# ggplot() + geom_point(data = videogames, mapping = aes(x = Critic_Score, y = Platform == 'WiiU' & User_Score))
 
+WiiUScores <- videogames[ videogames$Platform == 'WiiU' , names(videogames) == 'Platform' | names(videogames) == 'Critic_Score' | names(videogames) == 'User_Score']
+
+str(WiiUScores)
+
+# ggplot(WiiUScores, aes(x = Critic_Score, y = User_Score, geom = "point"))
+
+answer5 <- ggplot() + geom_point(data = videogames, mapping = aes(y = Critic_Score, x = User_Score, color = Critic_Score, size = User_Score)) + labs(title="WiiU Critic Scores by User Scores", x="User's Scores", y="Critic's Scores")
+
+answer5
 
