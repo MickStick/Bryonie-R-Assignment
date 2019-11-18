@@ -74,4 +74,14 @@ videogameRatings <- videogameRatings %>% count(Rating, NumOfGames)
 # gameCount
 
 answer6 = ggplot(data = videogameRatings, mapping = aes(y = NumOfGames, x = Rating)) + geom_bar(stat="identity") + labs( x = 'Ratings', y = 'Number of Games', title = 'Number of Games per Rating')
-answer6
+# answer6
+
+################ Question #7 ################
+
+UbiAct <- videogames[videogames$Publisher == 'Ubisoft' | videogames$Publisher == 'Activision', names(videogames) == 'Genre' | names(videogames) == 'Publisher']
+UbiAct <- na.omit(UbiAct)
+
+UbiAct <- UbiAct %>% count(Genre, Publisher, name="NumOfPublishes")
+
+answer7 <- ggplot(data = UbiAct, mapping = aes(y = NumOfPublishes, x = Genre, fill = Publisher)) + geom_col() + labs( x = 'Genre', y = 'Number of Publishes', title = "Number of Publishes per Genre for 'Ubisoft' and 'Activision'")
+answer7
