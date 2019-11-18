@@ -1,6 +1,7 @@
 # Byronie Richards u-number
 
-require('dplyr')
+library(dplyr)
+library(ggplot2)
 
 videogames <- read.delim("./input/videogames.txt", stringsAsFactors = FALSE)
 
@@ -35,9 +36,20 @@ PlaformsAndGlobalSales <- videogames[ , names(videogames) == 'Name' | names(vide
 
 PlaformsAndGlobalSales$Num_Platforms <- transform(PlaformsAndGlobalSales, Num_Platforms = ave(seq(nrow(PlaformsAndGlobalSales)), Name, FUN=length))
 
-str(PlaformsAndGlobalSales$Num_Platforms) 
+# str(PlaformsAndGlobalSales$Num_Platforms) 
+
+answer3 <- PlaformsAndGlobalSales
 
 ################ Question #4 ################
+
+NoKAVideogames <- videogames
+NoKAVideogames$Rating[NoKAVideogames$Rating == 'K-A'] <- 'E10+'
+
+answer4 <- NoKAVideogames
+
+################ Question #5 ################
+
+ggplot() + geom_point(data = videogames, mapping = aes(x = Platform == 'WiiU' & User_Score, y = Critic_Score))
 
 
 
