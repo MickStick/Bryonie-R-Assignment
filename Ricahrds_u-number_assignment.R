@@ -51,9 +51,27 @@ answer4 <- NoKAVideogames
 
 WiiUScores <- videogames[ videogames$Platform == 'WiiU' , names(videogames) == 'Platform' | names(videogames) == 'Critic_Score' | names(videogames) == 'User_Score']
 
-str(WiiUScores)
+# str(WiiUScores)
 
 answer5 <- ggplot() + geom_point(data = videogames, mapping = aes(y = Critic_Score, x = User_Score, color = Critic_Score, size = User_Score)) + labs(title="WiiU Critic Scores by User Scores", x="User's Scores", y="Critic's Scores")
 
-answer5
+# answer5
 
+################ Question #6 ################
+
+videogameRatings <- videogames[videogames$Rating != 'AO', names(videogames) == 'Name' | names(videogames) == 'Rating']
+videogameRatings <- videogameRatings[videogameRatings$Rating != 'EC', ]
+videogameRatings <- videogameRatings[videogameRatings$Rating != 'K-A', ]
+videogameRatings <- videogameRatings[videogameRatings$Rating != 'RP', ]
+videogameRatings <- na.omit(videogameRatings)
+
+videogameRatings <- arrange(videogameRatings, Rating)
+videogameRatings <- transform(videogameRatings, NumOfGames = ave(seq(nrow(videogameRatings)), Rating, FUN=length))
+
+# str(videogameRatings)
+
+videogameRatings <- videogameRatings %>% count(Rating, NumOfGames)
+# gameCount
+
+answer6 = ggplot(data = videogameRatings, mapping = aes(y = NumOfGames, x = Rating)) + geom_bar(stat="identity") + labs( x = 'Ratings', y = 'Number of Games', title = 'Number of Games per Rating')
+answer6
