@@ -62,7 +62,7 @@ names(videogames) == 'User_Count']
 # str(WiiUScores)
 
 answer5 <- ggplot() + 
-    geom_point(data = videogames, mapping = aes(y = Critic_Score, 
+    geom_point(data = WiiUScores, mapping = aes(y = Critic_Score, 
     x = User_Score, color = Critic_Count, size = User_Count)) + 
     labs(title="WiiU Critic Scores by User Scores", x="Users' Scores",
      y="Critics' Scores", color="Critic Count", size = "User Count") + 
