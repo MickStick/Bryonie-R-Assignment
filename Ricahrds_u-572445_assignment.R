@@ -105,7 +105,7 @@ names(videogames) == 'Critic_Score']
 # str(GenreCritics)
 
 answer8 <- ggplot(data = GenreCritics, mapping = aes( x = Genre, 
-y = Critic_Score)) + geom_boxplot(outlier.colour="skyblue") + 
+y = Critic_Score)) + geom_boxplot(fill = "skyblue", notch = TRUE) + 
 labs(x = 'Genre', y = 'Critic Scores', 
 title = 'Distribution of Critic Scores by Genre')
 # answer8
