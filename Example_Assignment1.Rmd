@@ -1,0 +1,185 @@
+---
+output: pdf_document
+geometry: margin = 0.75in
+---
+
+```{r RMarkdown setup., include = FALSE}
+knitr::opts_knit$set(root.dir = '~/Dropbox/Gitbucket/Course')
+```
+
+```{r, include = FALSE}
+library("dplyr")
+library("ggplot2")
+videogames <- read.delim("input/videogames.txt", stringsAsFactors = FALSE)
+```
+
+## Research Skills: Programming with R
+
+## Assignment 1
+
+In a previous iteration of this course, these 11 Questions made up Assignment 1. It is representative of what you will be asked to do in the coming Assignment 1. The answers are included in the .Rmd version of this file.
+
+Assignment 1 tests your mastery of Worksheets 1 to 3. You will be asked to manipulate, summarise and plot data.
+
+It was graded as follows:
+
+* 0.5 point each for Questions 1 through 8
+* 1.5 point each for Questions 9 through 11
+* 1.0 point in total for overall code organisation & style
+* 0.5 point in total for complying with the instructions below
+
+The guidelines for overall code organisation & style can be found in the Mini-Worksheet and the slides for Class 3. Note that to receive full marks for this aspect you will have to make use of the `%>%` operator where applicable.
+
+Questions 1 through 8 will be graded semi-automatically. Answer them exactly as asked, no deviations or elaborations. All questions are independent; copy the data set before modifying it, and start afresh with the original each time.
+
+Other instructions:
+
+* solve all the questions in a single R script
+* use `Assigment_1_DemoScript.R`, from Blackboard, as the basis of this script
+* load the data exactly as shown in this demo; do not adapt the relative path
+* use any function from 'base R', `dplyr` and `ggplot2`, and no other packages
+* name your script `lastname_u-number_assignment1.R`
+* include your name and u-number at the top of your script
+* store your solutions to Questions 1 - 8 in the objects described
+
+This is an individual assignment: I accept that you will discuss it with your fellow students in general terms but directly sharing code is strictly prohibited. Suspected plagiarism will be referred to the Exam Board. Good luck!
+
+##### Data Set Information
+
+This assignment concerns a data set called `videogames`, which contains all videogames that have sold more than 100,000 copies. Most variables are self-explanatory; a few are explained below. Some videogames occur in the data set multiple times because they were released for multiple platforms, e.g. both for PlayStation consoles and for PCs.
+
+The `Sales` columns refer to North American, European, Japanese, Other, and Global Sales, respectively, in millions. In the `Scores` columns, critics' reviews range from 0 to 100, and users' reviews from 0 to 10. Each game's `Rating`, finally, indicates its suitable audience, with `E`, for example, indicating "Everyone" and `AO` "Adults Only".
+
+##### Question 1.
+Create an object that's a copy of `videogames`, but which contains only the videogames that have sold at least a million copies globally, and which omits all `Sales` columns except for `Global_Sales`. Create this object with a meaningful name initially, then copy it into an object called `answer1`.
+
+```{r, results = "hide", echo = FALSE}
+massive_worldwide_hits <- videogames %>%
+  filter(Global_Sales >= 1) %>%
+  select(-NA_Sales, -EU_Sales, -JP_Sales, -Other_Sales)
+answer1_c <- massive_worldwide_hits
+```
+
+##### Question 2.
+Create an object that's a copy of `videogames`, but with a new column called `Average_Score`. This column should contain, for all videogames that have both a `Critic_Score` and a `User_Score`, a sensible mean of these two scores, and `NA` otherwise. Create this object with a meaningful name initially, then copy it into an object called `answer2`.
+
+```{r, results = "hide", echo = FALSE}
+weighted_videogames <- videogames %>%
+  mutate(Average_Score = ((Critic_Score / 10) + User_Score) / 2)
+answer2_c <- weighted_videogames
+```
+
+##### Question 3.
+Create an object which contains, for each videogame, it total worldwide sales and the number of platforms it was released on. Its columns should be called `Name`, `Global_Sales` and `Num_Platforms`, respectively. Create this object with a meaningful name initially, then copy it into an object called `answer3`.
+
+```{r, results = "hide", echo = FALSE}
+summed_sales <- videogames %>%
+  group_by(Name) %>%
+  summarise(Global_Sales = sum(Global_Sales), Num_Platforms = n())
+answer3_c <- summed_sales
+```
+
+##### Question 4.
+The `videogames` data set contains one rating which no longer exists: `K-A`, "Kids to Adult". The updated version of this rating is `E10+`, "Everyone 10+". Create a copy of `videogames` that replaces all instances of of `K-A` with `E10+`. Create this object with a meaningful name initially, then copy it into an object called `answer4`.
+
+```{r, results = "hide", echo = FALSE}
+new_ratings <- videogames
+new_ratings$Rating[videogames$Rating == "K-A"] <- "E10+"
+answer4_c <- new_ratings
+```
+
+##### Question 5.
+Create a scatterplot with, for all `WiiU` games, `User_Score` on the x-axis and `Critic_Score` on the y-axis. Show the number of user reviews in the points' size and the number of critic reviews in the points' color. Ensure that the points are greyscale. Store this plot in an object called `answer5`.
+
+```{r, results = "hide", echo = FALSE}
+answer5_c <- filter(videogames, Platform == "WiiU") %>%
+  ggplot(aes(x = User_Score, y = Critic_Score, size = User_Count,
+    color = Critic_Count)) +
+  geom_point() +
+  scale_color_continuous(low = "white", high = "black")
+```
+
+##### Question 6.
+Create a barplot which shows, per `Rating`, the number of videogames in the data set.* Omit bars for the `AO`, `EC`, `K-A` and `RP` ratings, and sort the rest by their natural order: "Everyone", "Everyone 10+", "Teen" and "Mature". Label the bars accordingly. Store this plot in an object called `answer6`.
+
+```{r, results = "hide", echo = FALSE}
+answer6_c <- ggplot(videogames, aes(x = Rating)) +
+  geom_bar() +
+  scale_x_discrete(limits = c("E", "E10+", "T", "M"),
+    labels = c("Everyone", "Everyone 10+", "Teen", "Mature"))
+```
+
+##### Question 7.
+Create a barplot which shows, for the `Ubisoft` and `Activision` publishers, the number of games they have published per `Genre`. Each genre should be its own bar, with its own color, and all the bars for each publisher should be next to each other on the x-axis. Store this plot in an object called `answer7`.
+
+```{r, results = "hide", echo = FALSE}
+answer7_c <- filter(videogames, Publisher %in% c("Ubisoft", "Activision")) %>%
+  ggplot(aes(x = Publisher, fill = Genre)) +
+  geom_bar(position = "dodge")
+```
+
+##### Question 8.
+Create a notched boxplot which shows, per `Genre`, the distribution of critics' scores. Color the contents of the boxplots `"skyblue"`. Store this plot in an object called `answer8`.
+
+```{r, results = "hide", echo = FALSE}
+answer8_c <- ggplot(videogames, aes(x = Genre, y = Critic_Score)) +
+    geom_boxplot(fill = "skyblue", notch = TRUE)
+```
+
+##### Question 9.
+Create an object that holds three different types of information about the LEGO videogames in the data set. It should contain, in an appropriate format, (1) the total worldwide sales summed across all LEGO videogames; (2) the mean user score averaged across all LEGO videogames with user scores; and (3) the names of all LEGO videogames, sorted alphabetically. Each name should occur only once, even if it appears in the data set multiple times.
+
+```{r, results = "hide", echo = FALSE}
+LEGO_games <- videogames[grep("LEGO", videogames$Name, ignore.case = TRUE), ]
+total_sold <- sum(LEGO_games$Global_Sales)
+mean_rating <- mean(LEGO_games$User_Score, na.rm = TRUE)
+
+all_games <- select(LEGO_games, Name) %>%
+  arrange(Name) %>%
+  distinct()
+  
+answer9_c <-
+  list(total_sold = total_sold, mean_rating = mean_rating,
+    all_games = all_games)
+```
+
+##### Question 10.
+Create a line graph showing, per `Year_of_Release`, the total number of videogames in the data set. Each `Genre` should be its own line, and the order of the legend items should match the order of the lines in 2016. So, if, e.g., most videogames sold in 2016 were `Strategy`, the top legend item should also be `Strategy`, and so on. Name the x-axis 'Year of Release' and the y-axis 'Number of Games'.
+
+```{r, echo = FALSE}
+recent_releases <- filter(videogames,
+    Year_of_Release == max(Year_of_Release)) %>%
+  group_by(Genre) %>%
+  summarise(Number_Released = n()) %>%
+  arrange(desc(Number_Released))
+
+answer10_c <-
+  ggplot(videogames, aes(x = Year_of_Release, color = Genre)) +
+    geom_line(stat = "count") +
+    scale_color_discrete(breaks = recent_releases$Genre) +
+    scale_x_continuous(name = "Year of Release") +
+    scale_y_continuous(name = "Number of Games")
+```
+
+##### Question 11.
+Create a plot that looks as much as possible like the one below.
+
+```{r, echo = FALSE, fig.width = 8, fig.height = 2}
+games_per_genre <- group_by(videogames, Genre) %>%
+  summarise(Total_Games = n())
+
+answer11 <-
+  ggplot(games_per_genre, aes(x = Genre, y = Total_Games, fill = Genre)) +
+    geom_bar(stat = "identity") +
+    geom_text(aes(label = Total_Games), vjust = -0.5) +
+    scale_fill_discrete(guide = FALSE) +
+    scale_y_continuous(limits = c(0, 4000), name = "Number of Games") +
+    theme_bw() +
+    theme(panel.grid = element_blank(),
+      axis.text.y = element_blank(),
+      axis.ticks.y = element_blank(),
+      axis.title.x = element_blank()) +
+    ggtitle("Videogame Hits Per Genre")
+
+answer11
+```
