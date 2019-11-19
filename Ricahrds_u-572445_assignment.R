@@ -67,7 +67,7 @@ answer5 <- ggplot() +
     labs(title="WiiU Critic Scores by User Scores", x="Users' Scores",
      y="Critics' Scores", color="Critic Count", size = "User Count") + 
     scale_color_continuous(low = "white", high = "black")
-# answer5
+ #answer5
 
 ## Exercise 6 -----------------------------------------------------------------
 
@@ -102,13 +102,13 @@ title = "Number of Publishes per Genre for 'Ubisoft' and 'Activision'")
 GenreCritics <- videogames[ , names(videogames) == 'Genre' | 
 names(videogames) == 'Critic_Score']
 
-# str(GenreCritics)
+ #str(GenreCritics)
 
 answer8 <- ggplot(data = GenreCritics, mapping = aes( x = Genre, 
 y = Critic_Score)) + geom_boxplot(fill = "skyblue", notch = TRUE) + 
 labs(x = 'Genre', y = 'Critic Scores', 
 title = 'Distribution of Critic Scores by Genre')
-# answer8
+ #answer8
 
 ## Exercise 9 -----------------------------------------------------------------
 
@@ -124,13 +124,13 @@ All_LEGO_Games <- select(legoGames, Name) %>%
 
 # str(legoGames)
 
-answer9 <- list(
+list(
         user_score_mean = User_Score_Mean, 
         total_global_sales = Total_Global_Sales,
         all_lego_games = All_LEGO_Games
     )
 
-# answer9
+
 
 ## Exercise 10 -----------------------------------------------------------------
 
@@ -143,13 +143,13 @@ max(videogames$Year_of_Release),
 
 # str(numGamesPerYear)
 
-answer10 <- ggplot(data = videogames , mapping = aes(x = Year_of_Release, 
+ggplot(data = videogames , mapping = aes(x = Year_of_Release, 
 color=Genre)) + 
 labs( x = 'Year of Release', y = 'Number of Games', title='') + 
 scale_color_discrete(breaks = numGamesPerYear$Genre) +
 geom_line(stat = "count")
 
-# answer10
+
 
 ## Exercise 11 -----------------------------------------------------------------
 
@@ -163,8 +163,8 @@ gameGenre <- gameGenre %>% count(Genre, NumOfGames)
 
 # str(gameGenre)
 
-answer11 <- ggplot(data = gameGenre, 
-mapping = aes(y = as(NumOfGames, 'integer'), x = Genre, fill=Genre)) + 
+ggplot(data = gameGenre, 
+mapping = aes(y = as(NumOfGames, 'integer'), x = Genre, fill=Genre )) + 
 geom_col() + labs( x = "", y = "Number of Games", 
 title="Videogame Hits Per Genre") + 
 theme_bw() +
@@ -172,6 +172,6 @@ theme(legend.position="none", panel.grid = element_blank(),
 axis.text.y=element_blank(), axis.ticks.y = element_blank()) + 
 geom_text(aes(label=NumOfGames), vjust=-0.5)
 
-answer11
+
 
 
