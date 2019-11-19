@@ -39,7 +39,6 @@ names(videogames) == 'Global_Sales'] %>% group_by(Name) %>%
                          summarise(Global_Sales = sum(Global_Sales), 
                          Num_Platforms = n())
 
-# str(PlaformsAndGlobalSales$Num_Platforms) 
 
 answer3 <- PlaformsAndGlobalSales
 # str(answer3)
@@ -92,8 +91,6 @@ UbiAct <- videogames[videogames$Publisher == 'Ubisoft' |
 videogames$Publisher == 'Activision', names(videogames) == 'Genre' | 
 names(videogames) == 'Publisher']
 UbiAct <- na.omit(UbiAct)
-
-# UbiAct <- UbiAct %>% count(Genre, Publisher, name="NumOfPublishes")
 
 answer7 <- ggplot(data = UbiAct, mapping = aes( x = Publisher, fill = Genre)) + 
 geom_bar(position = "dodge") + labs( y = 'Genre', x = 'Number of Publishes', 
