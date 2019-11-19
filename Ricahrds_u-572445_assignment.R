@@ -112,22 +112,25 @@ title = 'Distribution of Critic Scores by Genre')
 
 ## Exercise 9 -----------------------------------------------------------------
 
-legoGames <- videogames[grepl('LEGO', videogames$Name, fixed=TRUE) , 
+legoGames <- videogames[grepl('LEGO', videogames$Name, 
+ignore.case = TRUE) , 
 names(videogames) == 'Name' | names(videogames) == 'User_Score' | 
-names(videogames) == 'Global_Sales'] %>% 
-    group_by(Name) %>% summarize(Global_Sales = sum(na.omit(Global_Sales)), 
-    User_Score = sum(na.omit(User_Score))) 
+names(videogames) == 'Global_Sales'] 
 User_Score_Mean <- mean(na.omit(legoGames[['User_Score']]))
 Total_Global_Sales <- sum(na.omit(legoGames[['Global_Sales']]))
+All_LEGO_Games <- select(legoGames, Name) %>% 
+    group_by(Name) %>%
+    distinct()
 
 # str(legoGames)
 
 answer9 <- list(
         user_score_mean = User_Score_Mean, 
         total_global_sales = Total_Global_Sales,
-        all_lego_games = legoGames[ , names(legoGames) == 'Name']
+        all_lego_games = All_LEGO_Games
     )
-# str(answer9)
+
+# answer9
 
 ## Exercise 10 -----------------------------------------------------------------
 
@@ -167,8 +170,8 @@ title="Videogame Hits Per Genre") +
 theme_bw() +
 theme(legend.position="none", panel.grid = element_blank(), 
 axis.text.y=element_blank(), axis.ticks.y = element_blank()) + 
-geom_text(aes(label=NumOfGames), position=position_dodge(width=0.9), vjust=-0.5)
+geom_text(aes(label=NumOfGames), vjust=-0.5)
 
-# answer11
+answer11
 
 
